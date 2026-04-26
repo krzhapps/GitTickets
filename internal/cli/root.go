@@ -57,11 +57,6 @@ func NewRootCmd() *cobra.Command {
 	return cmd
 }
 
-// Execute is the entry point invoked from main.
-func Execute() error {
-	return NewRootCmd().Execute()
-}
-
 const rootLongHelp = `tickets manages a directory of Markdown tickets tracked in git.
 
 Tickets live under tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md
