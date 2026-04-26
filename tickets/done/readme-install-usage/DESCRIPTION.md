@@ -1,6 +1,6 @@
 ---
 title: Write README with install and usage
-status: pending
+status: done
 priority: medium
 created: "2026-04-25"
 labels:
