@@ -1,6 +1,6 @@
 ---
 name: tickets
-description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about ticket dependencies, creating a branch from a ticket, or initializing the `tickets/` layout in a new repo.
+description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about tickets, ticket dependencies, , creating a branch from a ticket, or initializing the `tickets/` layout in a new repo.
 ---
 
 # tickets
@@ -21,7 +21,7 @@ Trigger on requests that mention tickets, issues-in-repo, the `tickets/` directo
 
 ## Invocation
 
-If the binary is on `$PATH`, call `tickets …`. If not (common during development of this repo itself), call `go run ./cmd/tickets …` from the repo root. Prefer the installed binary when available.
+If the binary is on `$PATH`, call `tickets …`. If not you need to install it via `go install github.com/krzhapps/GithubTickets/cmd/tickets@latest`
 
 ## Common workflows
 
