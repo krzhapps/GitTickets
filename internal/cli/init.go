@@ -16,9 +16,11 @@ func newInitCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if err := s.Init(); err != nil {
 				return err
 			}
+
 			fmt.Fprintf(cmd.OutOrStdout(), "initialized %s\n", s.Root)
 			return nil
 		},

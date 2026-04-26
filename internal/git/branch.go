@@ -8,6 +8,7 @@ func (g *Git) Branch(name string, checkout bool) error {
 		_, err := g.run("checkout", "-b", name)
 		return err
 	}
+
 	_, err := g.run("branch", name)
 	return err
 }

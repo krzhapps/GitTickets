@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"slices"
 	"sort"
 
 	"github.com/spf13/cobra"
@@ -18,6 +19,7 @@ func newListCmd(g *Globals) *cobra.Command {
 		asJSON     bool
 		all        bool
 	)
+
 	cmd := &cobra.Command{
 		Use:   "list",
 		Short: "List tickets (default: open work — pending, in-progress, blocked)",
@@ -27,6 +29,7 @@ func newListCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			ts, err := s.Load()
 			if err != nil {
 				return err
@@ -46,10 +49,12 @@ func newListCmd(g *Globals) *cobra.Command {
 			if asJSON {
 				return render.TicketsJSON(cmd.OutOrStdout(), ts)
 			}
+
 			render.TicketsTable(cmd.OutOrStdout(), ts)
 			return nil
 		},
 	}
+
 	cmd.Flags().StringSliceVar(&statuses, "status", nil, "filter by status (repeatable)")
 	cmd.Flags().StringSliceVar(&priorities, "priority", nil, "filter by priority (repeatable)")
 	cmd.Flags().StringSliceVar(&labels, "label", nil, "filter by label — ticket must have ALL given labels")
@@ -62,10 +67,10 @@ func newListCmd(g *Globals) *cobra.Command {
 func filterTickets(ts []ticket.Ticket, statuses, priorities, labels []string, assignee string) []ticket.Ticket {
 	out := ts[:0:0]
 	for _, t := range ts {
-		if len(statuses) > 0 && !contains(statuses, string(t.Status)) {
+		if len(statuses) > 0 && !slices.Contains(statuses, string(t.Status)) {
 			continue
 		}
-		if len(priorities) > 0 && !contains(priorities, string(t.Priority)) {
+		if len(priorities) > 0 && !slices.Contains(priorities, string(t.Priority)) {
 			continue
 		}
 		if assignee != "" && t.Assignee != assignee {
@@ -79,18 +84,9 @@ func filterTickets(ts []ticket.Ticket, statuses, priorities, labels []string, as
 	return out
 }
 
-func contains(haystack []string, needle string) bool {
-	for _, h := range haystack {
-		if h == needle {
-			return true
-		}
-	}
-	return false
-}
-
 func hasAllLabels(have, need []string) bool {
 	for _, n := range need {
-		if !contains(have, n) {
+		if !slices.Contains(have, n) {
 			return false
 		}
 	}

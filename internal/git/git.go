@@ -39,8 +39,10 @@ func (g *Git) run(args ...string) ([]byte, error) {
 	if g.Runner != nil {
 		return g.Runner.Run(args...)
 	}
+
 	cmd := exec.Command("git", args...)
 	cmd.Dir = g.Dir
+
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	out, err := cmd.Output()
@@ -48,6 +50,7 @@ func (g *Git) run(args ...string) ([]byte, error) {
 		return out, fmt.Errorf("git %s: %w (%s)",
 			strings.Join(args, " "), err, strings.TrimSpace(stderr.String()))
 	}
+
 	return out, nil
 }
 
@@ -59,5 +62,6 @@ func (g *Git) IsRepo() bool {
 	if err != nil {
 		return false
 	}
+
 	return strings.TrimSpace(string(out)) == "true"
 }

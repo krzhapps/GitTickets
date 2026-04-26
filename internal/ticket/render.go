@@ -36,6 +36,7 @@ func (t *Ticket) Render() ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("marshal frontmatter: %w", err)
 	}
+
 	buf.Write(fm)
 	buf.WriteString("---\n")
 
@@ -45,6 +46,7 @@ func (t *Ticket) Render() ([]byte, error) {
 		buf.WriteString(s)
 		buf.WriteByte('\n')
 	}
+
 	return buf.Bytes(), nil
 }
 
@@ -68,6 +70,7 @@ func (t *Ticket) bodySections() []string {
 			}
 			fmt.Fprintf(&sb, "- [%s] %s", mark, ac.Text)
 		}
+
 		out = append(out, sb.String())
 	}
 
@@ -84,6 +87,7 @@ func (t *Ticket) bodySections() []string {
 			}
 			fmt.Fprintf(&sb, "- `%s` — %s", d.Slug, d.Reason)
 		}
+
 		out = append(out, sb.String())
 	}
 

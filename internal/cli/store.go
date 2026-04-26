@@ -27,8 +27,10 @@ func storeFromGlobals(g *Globals) (*store.Store, error) {
 		if werr != nil {
 			return nil, werr
 		}
+
 		s, err = store.Discover(wd)
 	}
+
 	if err != nil {
 		return nil, err
 	}

@@ -39,10 +39,11 @@ const (
 	bucketInProgress = "in-progress"
 	bucketDone       = "done"
 	bucketArchived   = "archived"
+	bucketBlocked    = "blocked"
 )
 
 // allBuckets is the iteration order for Load — pending work surfaces first.
-var allBuckets = []string{bucketToDo, bucketInProgress, bucketDone, bucketArchived}
+var allBuckets = []string{bucketToDo, bucketInProgress, bucketBlocked, bucketDone, bucketArchived}
 
 // DirForStatus returns the bucket directory a ticket with the given status
 // belongs in. Both in-progress and blocked share the in-progress/ bucket.
@@ -51,8 +52,10 @@ func DirForStatus(s ticket.Status) string {
 	switch s {
 	case ticket.StatusPending:
 		return bucketToDo
-	case ticket.StatusInProgress, ticket.StatusBlocked:
+	case ticket.StatusInProgress:
 		return bucketInProgress
+	case ticket.StatusBlocked:
+		return bucketBlocked
 	case ticket.StatusDone:
 		return bucketDone
 	case ticket.StatusArchived:
@@ -74,6 +77,7 @@ func Open(root string) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &Store{Root: abs}, nil
 }
 
@@ -86,15 +90,18 @@ func Discover(startDir string) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	dir := abs
 	for {
 		if isDir(filepath.Join(dir, "tickets")) || isDir(filepath.Join(dir, ".git")) {
 			return Open(filepath.Join(dir, "tickets"))
 		}
+
 		parent := filepath.Dir(dir)
 		if parent == dir {
 			return nil, fmt.Errorf("no tickets/ or .git directory found from %s", startDir)
 		}
+
 		dir = parent
 	}
 }
@@ -107,6 +114,7 @@ func (s *Store) Init() error {
 		if err := os.MkdirAll(bucket, 0o755); err != nil {
 			return err
 		}
+
 		gk := filepath.Join(bucket, ".gitkeep")
 		if _, err := os.Stat(gk); errors.Is(err, fs.ErrNotExist) {
 			if err := os.WriteFile(gk, nil, 0o644); err != nil {

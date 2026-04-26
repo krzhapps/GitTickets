@@ -17,6 +17,7 @@ func (s *Store) Create(t *ticket.Ticket) error {
 	if err := ticket.ValidateSlug(t.Slug); err != nil {
 		return err
 	}
+
 	if !t.Status.Valid() {
 		return fmt.Errorf("invalid status %q", t.Status)
 	}
@@ -32,6 +33,7 @@ func (s *Store) Create(t *ticket.Ticket) error {
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return err
 	}
+
 	t.Dir = dir
 	return s.Save(t)
 }
@@ -43,10 +45,12 @@ func (s *Store) Save(t *ticket.Ticket) error {
 	if t.Dir == "" {
 		return fmt.Errorf("ticket %q has no Dir set", t.Slug)
 	}
+
 	data, err := t.Render()
 	if err != nil {
 		return err
 	}
+
 	return os.WriteFile(filepath.Join(t.Dir, "DESCRIPTION.md"), data, 0o644)
 }
 
@@ -62,6 +66,7 @@ func (s *Store) Move(slug string, target ticket.Status) (*ticket.Ticket, error) 
 	if !target.Valid() {
 		return nil, fmt.Errorf("invalid status %q", target)
 	}
+
 	t, err := s.Find(slug)
 	if err != nil {
 		return nil, err
@@ -75,15 +80,17 @@ func (s *Store) Move(slug string, target ticket.Status) (*ticket.Ticket, error) 
 		if err := os.MkdirAll(newParent, 0o755); err != nil {
 			return nil, err
 		}
-		newDir := filepath.Join(newParent, slug)
 
+		newDir := filepath.Join(newParent, slug)
 		rename := s.Rename
 		if rename == nil {
 			rename = os.Rename
 		}
+
 		if err := rename(t.Dir, newDir); err != nil {
 			return nil, fmt.Errorf("rename %s -> %s: %w", t.Dir, newDir, err)
 		}
+
 		t.Dir = newDir
 	}
 
@@ -91,5 +98,6 @@ func (s *Store) Move(slug string, target ticket.Status) (*ticket.Ticket, error) 
 	if err := s.Save(t); err != nil {
 		return nil, err
 	}
+
 	return t, nil
 }

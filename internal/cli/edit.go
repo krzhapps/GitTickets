@@ -19,15 +19,18 @@ func newEditCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			t, err := s.Find(args[0])
 			if err != nil {
 				return err
 			}
+
 			descPath := filepath.Join(t.Dir, "DESCRIPTION.md")
 			if !stdinIsTTY() {
 				fmt.Fprintln(cmd.OutOrStdout(), descPath)
 				return nil
 			}
+
 			return editor.Open(descPath)
 		},
 	}

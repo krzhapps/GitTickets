@@ -22,6 +22,7 @@ func (s Status) Valid() bool {
 	case StatusPending, StatusInProgress, StatusBlocked, StatusDone, StatusArchived:
 		return true
 	}
+
 	return false
 }
 
@@ -40,6 +41,7 @@ func (p Priority) Valid() bool {
 	case PriorityLow, PriorityMedium, PriorityHigh:
 		return true
 	}
+
 	return false
 }
 

@@ -14,6 +14,7 @@ func (g *Git) Mv(oldPath, newPath string) error {
 	if !g.IsRepo() {
 		return os.Rename(oldPath, newPath)
 	}
+
 	_, err := g.run("mv", oldPath, newPath)
 	return err
 }

@@ -24,22 +24,27 @@ func newValidateCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			only := ""
 			if len(args) == 1 {
 				only = args[0]
 			}
+
 			issues, err := validateAll(s, only)
 			if err != nil {
 				return err
 			}
+
 			out := cmd.OutOrStdout()
 			if len(issues) == 0 {
 				fmt.Fprintln(out, "OK")
 				return nil
 			}
+
 			for _, iss := range issues {
 				fmt.Fprintln(cmd.ErrOrStderr(), iss)
 			}
+
 			return exitErr(2, "%d validation issue(s)", len(issues))
 		},
 	}

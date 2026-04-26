@@ -26,6 +26,7 @@ func Parse(slug string, data []byte) (*Ticket, error) {
 	if err := yaml.Unmarshal(fm, &t); err != nil {
 		return nil, fmt.Errorf("frontmatter: %w", err)
 	}
+
 	t.Slug = slug
 
 	sections := parseSections(body)
@@ -47,12 +48,15 @@ func splitFrontmatter(data []byte) ([]byte, []byte, error) {
 	for sc.Scan() {
 		lines = append(lines, sc.Text())
 	}
+
 	if err := sc.Err(); err != nil {
 		return nil, nil, err
 	}
+
 	if len(lines) == 0 || lines[0] != "---" {
 		return nil, nil, fmt.Errorf("missing opening '---' frontmatter delimiter")
 	}
+
 	for i := 1; i < len(lines); i++ {
 		if lines[i] == "---" {
 			fm := []byte(strings.Join(lines[1:i], "\n"))
@@ -60,6 +64,7 @@ func splitFrontmatter(data []byte) ([]byte, []byte, error) {
 			return fm, body, nil
 		}
 	}
+
 	return nil, nil, fmt.Errorf("missing closing '---' frontmatter delimiter")
 }
 
@@ -75,6 +80,7 @@ func parseSections(body []byte) map[string]string {
 		if current != "" {
 			sections[current] = strings.TrimSpace(content.String())
 		}
+
 		content.Reset()
 	}
 
@@ -90,6 +96,7 @@ func parseSections(body []byte) map[string]string {
 			content.WriteByte('\n')
 		}
 	}
+
 	flush()
 	return sections
 }
@@ -104,8 +111,9 @@ func parseACItems(text string) []ACItem {
 	if text == "" {
 		return nil
 	}
+
 	var items []ACItem
-	for _, line := range strings.Split(text, "\n") {
+	for line := range strings.SplitSeq(text, "\n") {
 		m := acItemRe.FindStringSubmatch(strings.TrimSpace(line))
 		if m == nil {
 			continue
@@ -113,6 +121,7 @@ func parseACItems(text string) []ACItem {
 		done := m[1] == "x" || m[1] == "X"
 		items = append(items, ACItem{Done: done, Text: strings.TrimSpace(m[2])})
 	}
+
 	return items
 }
 
@@ -120,8 +129,9 @@ func parseDependencies(text string) []Dependency {
 	if text == "" {
 		return nil
 	}
+
 	var deps []Dependency
-	for _, line := range strings.Split(text, "\n") {
+	for line := range strings.SplitSeq(text, "\n") {
 		m := depRe.FindStringSubmatch(strings.TrimSpace(line))
 		if m == nil {
 			continue
@@ -131,5 +141,6 @@ func parseDependencies(text string) []Dependency {
 			Reason: strings.TrimSpace(m[2]),
 		})
 	}
+
 	return deps
 }
