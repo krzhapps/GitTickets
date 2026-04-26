@@ -1,4 +1,4 @@
-module github.com/krzhapps/GithubTickets
+module github.com/krzhapps/GitTickets
 
 go 1.25.9
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/render"
+	"github.com/krzhapps/GitTickets/internal/render"
 )
 
 func newShowCmd(g *Globals) *cobra.Command {

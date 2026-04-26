@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 // newStore returns a Store rooted at <tempdir>/tickets, already Init'd.

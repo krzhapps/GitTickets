@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/krzhapps/GithubTickets/internal/cli"
+	"github.com/krzhapps/GitTickets/internal/cli"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/git"
+	"github.com/krzhapps/GitTickets/internal/git"
 )
 
 func newBranchCmd(g *Globals) *cobra.Command {

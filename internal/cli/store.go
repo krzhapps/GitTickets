@@ -4,8 +4,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/krzhapps/GithubTickets/internal/git"
-	"github.com/krzhapps/GithubTickets/internal/store"
+	"github.com/krzhapps/GitTickets/internal/git"
+	"github.com/krzhapps/GitTickets/internal/store"
 )
 
 // storeFromGlobals resolves a *store.Store from --root, then $TICKETS_ROOT,

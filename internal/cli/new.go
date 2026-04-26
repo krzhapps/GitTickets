@@ -8,8 +8,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/editor"
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/editor"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 func newNewCmd(g *Globals) *cobra.Command {
