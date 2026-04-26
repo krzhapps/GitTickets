@@ -20,5 +20,6 @@ func TicketsTable(w io.Writer, ts []ticket.Ticket) {
 		fmt.Fprintf(tw, "%s\t%s\t%s\t%s\t%s\n",
 			t.Slug, t.Status, t.Priority, t.Title, strings.Join(t.Labels, ","))
 	}
+
 	_ = tw.Flush()
 }

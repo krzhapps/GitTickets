@@ -15,10 +15,12 @@ func runMove(cmd *cobra.Command, g *Globals, slug string, target ticket.Status) 
 	if err != nil {
 		return err
 	}
+
 	moved, err := s.Move(slug, target)
 	if err != nil {
 		return err
 	}
+
 	fmt.Fprintf(cmd.OutOrStdout(), "%s -> %s (%s)\n", moved.Slug, moved.Status, moved.Dir)
 	return nil
 }
@@ -33,6 +35,7 @@ func newMoveCmd(g *Globals) *cobra.Command {
 			if !target.Valid() {
 				return fmt.Errorf("invalid status %q", args[1])
 			}
+
 			return runMove(cmd, g, args[0], target)
 		},
 	}

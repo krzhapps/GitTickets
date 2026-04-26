@@ -21,6 +21,7 @@ func Resolve() string {
 			return v
 		}
 	}
+
 	return "vi"
 }
 
@@ -37,6 +38,7 @@ func openWith(cmdLine, path string) error {
 	if len(parts) == 0 {
 		return errors.New("editor is empty")
 	}
+
 	bin, args := parts[0], append(parts[1:], path)
 
 	c := exec.Command(bin, args...)
@@ -46,5 +48,6 @@ func openWith(cmdLine, path string) error {
 	if err := c.Run(); err != nil {
 		return fmt.Errorf("editor %q: %w", cmdLine, err)
 	}
+
 	return nil
 }

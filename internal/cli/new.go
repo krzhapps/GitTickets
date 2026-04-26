@@ -21,6 +21,7 @@ func newNewCmd(g *Globals) *cobra.Command {
 		created  string
 		noEdit   bool
 	)
+
 	cmd := &cobra.Command{
 		Use:   "new <slug>",
 		Short: "Create a new ticket under to-do/<slug>/DESCRIPTION.md",
@@ -35,9 +36,11 @@ func newNewCmd(g *Globals) *cobra.Command {
 			if !pri.Valid() {
 				return fmt.Errorf("invalid --priority %q (low|medium|high)", priority)
 			}
+
 			if title == "" {
 				title = slug
 			}
+
 			if created == "" {
 				created = time.Now().UTC().Format("2006-01-02")
 			}
@@ -46,6 +49,7 @@ func newNewCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			if err := s.Init(); err != nil {
 				return err
 			}
@@ -69,15 +73,18 @@ func newNewCmd(g *Globals) *cobra.Command {
 			if noEdit || !stdinIsTTY() {
 				return nil
 			}
+
 			return editor.Open(descPath)
 		},
 	}
+
 	cmd.Flags().StringVar(&title, "title", "", "ticket title (defaults to slug)")
 	cmd.Flags().StringVar(&priority, "priority", "medium", "low|medium|high")
 	cmd.Flags().StringSliceVar(&labels, "label", nil, "label (repeatable)")
 	cmd.Flags().StringVar(&assignee, "assignee", "", "assignee")
 	cmd.Flags().StringVar(&created, "created", "", "YYYY-MM-DD (defaults to today UTC)")
 	cmd.Flags().BoolVar(&noEdit, "no-edit", false, "do not open $EDITOR after scaffolding")
+
 	return cmd
 }
 

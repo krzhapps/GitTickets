@@ -20,10 +20,12 @@ func newSearchCmd(g *Globals) *cobra.Command {
 			if err != nil {
 				return err
 			}
+
 			ts, err := s.Load()
 			if err != nil {
 				return err
 			}
+
 			q := strings.ToLower(args[0])
 			var hits []ticket.Ticket
 			for _, t := range ts {
@@ -31,11 +33,13 @@ func newSearchCmd(g *Globals) *cobra.Command {
 					hits = append(hits, t)
 				}
 			}
+
 			sort.Slice(hits, func(i, j int) bool { return hits[i].Slug < hits[j].Slug })
 			out := cmd.OutOrStdout()
 			for _, t := range hits {
 				fmt.Fprintf(out, "%s — %s\n", t.Slug, t.Title)
 			}
+
 			return nil
 		},
 	}

@@ -45,8 +45,10 @@ func TicketsJSON(w io.Writer, ts []ticket.Ticket) error {
 	for i, t := range ts {
 		out[i] = toJSON(t)
 	}
+
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")
+
 	return enc.Encode(out)
 }
 
@@ -54,5 +56,6 @@ func TicketsJSON(w io.Writer, ts []ticket.Ticket) error {
 func TicketJSON(w io.Writer, t ticket.Ticket) error {
 	enc := json.NewEncoder(w)
 	enc.SetIndent("", "  ")
+
 	return enc.Encode(toJSON(t))
 }

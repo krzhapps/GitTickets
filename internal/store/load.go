@@ -29,10 +29,12 @@ func (s *Store) Load() ([]ticket.Ticket, error) {
 			}
 			return nil, err
 		}
+
 		for _, e := range entries {
 			if !e.IsDir() {
 				continue
 			}
+
 			t, err := readTicket(bucket, e.Name())
 			if err != nil {
 				if errors.Is(err, fs.ErrNotExist) {
@@ -40,6 +42,7 @@ func (s *Store) Load() ([]ticket.Ticket, error) {
 				}
 				return nil, err
 			}
+
 			tickets = append(tickets, *t)
 		}
 	}
@@ -53,17 +56,21 @@ func (s *Store) Find(slug string) (*ticket.Ticket, error) {
 	if err := ticket.ValidateSlug(slug); err != nil {
 		return nil, err
 	}
+
 	for _, b := range allBuckets {
 		bucket := filepath.Join(s.Root, b)
 		t, err := readTicket(bucket, slug)
 		if err == nil {
 			return t, nil
 		}
+
 		if errors.Is(err, fs.ErrNotExist) {
 			continue
 		}
+
 		return nil, err
 	}
+
 	return nil, fmt.Errorf("ticket %q: %w", slug, fs.ErrNotExist)
 }
 
@@ -76,10 +83,12 @@ func readTicket(bucket, slug string) (*ticket.Ticket, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	t, err := ticket.Parse(slug, data)
 	if err != nil {
 		return nil, fmt.Errorf("parse %s: %w", descPath, err)
 	}
+
 	t.Dir = dir
 	return t, nil
 }

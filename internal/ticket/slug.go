@@ -14,8 +14,10 @@ func ValidateSlug(s string) error {
 	if s == "" {
 		return fmt.Errorf("slug cannot be empty")
 	}
+
 	if !slugRe.MatchString(s) {
 		return fmt.Errorf("invalid slug %q: must be kebab-case (lowercase letters, digits, single hyphens between segments)", s)
 	}
+
 	return nil
 }
