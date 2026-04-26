@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 // runMove is the shared implementation behind `move`, `start`, `done`,

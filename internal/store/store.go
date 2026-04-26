@@ -14,7 +14,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 // RenameFunc renames a directory (or file). Same shape as os.Rename so a

@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 // Load returns every ticket present in any bucket directory. The Dir

@@ -10,8 +10,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/store"
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/store"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 func newValidateCmd(g *Globals) *cobra.Command {

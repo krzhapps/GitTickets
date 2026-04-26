@@ -6,8 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/render"
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/render"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 func newListCmd(g *Globals) *cobra.Command {

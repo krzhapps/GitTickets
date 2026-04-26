@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/krzhapps/GithubTickets/internal/editor"
+	"github.com/krzhapps/GitTickets/internal/editor"
 )
 
 func newEditCmd(g *Globals) *cobra.Command {

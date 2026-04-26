@@ -8,7 +8,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/krzhapps/GithubTickets/internal/ticket"
+	"github.com/krzhapps/GitTickets/internal/ticket"
 )
 
 // TicketsTable writes a column-aligned table of tickets to w. Columns:
