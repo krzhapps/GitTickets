@@ -1,6 +1,6 @@
 ---
 title: 'GitHub Actions workflow: vet, lint, test, validate'
-status: pending
+status: done
 priority: medium
 created: "2026-04-25"
 labels:
