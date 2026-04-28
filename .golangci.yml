@@ -1,0 +1,32 @@
+version: "2"
+output:
+  formats:
+    text:
+      path: stdout
+      print-linter-name: true
+      print-issued-lines: true
+linters:
+  enable:
+    - govet
+    - ineffassign
+    - staticcheck
+    - misspell
+    - unused
+  settings:
+    errcheck:
+      exclude-functions:
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - fmt.Fprint
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports

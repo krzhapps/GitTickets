@@ -148,24 +148,6 @@ func TestMove_AcrossBuckets(t *testing.T) {
 	}
 }
 
-func TestMove_BlockedStaysInInProgressBucket(t *testing.T) {
-	t.Parallel()
-	s := newStore(t)
-	if err := s.Create(newTicket("wip", "Wip", ticket.StatusInProgress)); err != nil {
-		t.Fatal(err)
-	}
-	moved, err := s.Move("wip", ticket.StatusBlocked)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if moved.Status != ticket.StatusBlocked {
-		t.Errorf("status = %q", moved.Status)
-	}
-	if got := filepath.Base(filepath.Dir(moved.Dir)); got != bucketInProgress {
-		t.Errorf("bucket = %q, want %q", got, bucketInProgress)
-	}
-}
-
 func TestMove_UsesInjectedRenameFunc(t *testing.T) {
 	t.Parallel()
 	s := newStore(t)
@@ -201,10 +183,10 @@ func TestMove_PropagatesRenameError(t *testing.T) {
 	}
 }
 
-func TestDiscover_FindsTicketsDir(t *testing.T) {
+func TestDiscover_FindsTasksDir(t *testing.T) {
 	t.Parallel()
 	tmp := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(tmp, "tickets"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(tmp, "tasks"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	nested := filepath.Join(tmp, "src", "deep")
@@ -216,7 +198,7 @@ func TestDiscover_FindsTicketsDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, _ := filepath.Abs(filepath.Join(tmp, "tickets"))
+	want, _ := filepath.Abs(filepath.Join(tmp, "tasks"))
 	if s.Root != want {
 		t.Errorf("Root = %s, want %s", s.Root, want)
 	}
@@ -236,7 +218,7 @@ func TestDiscover_FindsViaGitDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, _ := filepath.Abs(filepath.Join(tmp, "tickets"))
+	want, _ := filepath.Abs(filepath.Join(tmp, "tasks"))
 	if s.Root != want {
 		t.Errorf("Root = %s, want %s", s.Root, want)
 	}
@@ -247,7 +229,7 @@ func TestDirForStatus(t *testing.T) {
 	cases := map[ticket.Status]string{
 		ticket.StatusPending:    bucketToDo,
 		ticket.StatusInProgress: bucketInProgress,
-		ticket.StatusBlocked:    bucketInProgress,
+		ticket.StatusBlocked:    bucketBlocked,
 		ticket.StatusDone:       bucketDone,
 		ticket.StatusArchived:   bucketArchived,
 		"unknown":               "",

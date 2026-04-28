@@ -1,6 +1,6 @@
 ---
 title: Add Makefile and golangci-lint config
-status: pending
+status: done
 priority: medium
 created: "2026-04-25"
 labels:

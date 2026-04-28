@@ -9,7 +9,7 @@ import (
 func newInitCmd(g *Globals) *cobra.Command {
 	return &cobra.Command{
 		Use:   "init",
-		Short: "Create the tickets/{to-do,in-progress,done,archived} layout",
+		Short: "Create the tasks/{to-do,in-progress,done,archived} layout",
 		Args:  cobra.NoArgs,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			s, err := storeFromGlobals(g)

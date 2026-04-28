@@ -82,8 +82,8 @@ func Open(root string) (*Store, error) {
 }
 
 // Discover walks up from startDir looking for a directory that contains
-// either a tickets/ subdirectory or a .git/ subdirectory, and returns a
-// Store rooted at <found>/tickets. The tickets/ directory itself need
+// either a tasks/ subdirectory or a .git/ subdirectory, and returns a
+// Store rooted at <found>/tasks. The tasks/ directory itself need
 // not exist yet — Init can populate it.
 func Discover(startDir string) (*Store, error) {
 	abs, err := filepath.Abs(startDir)
@@ -93,13 +93,13 @@ func Discover(startDir string) (*Store, error) {
 
 	dir := abs
 	for {
-		if isDir(filepath.Join(dir, "tickets")) || isDir(filepath.Join(dir, ".git")) {
-			return Open(filepath.Join(dir, "tickets"))
+		if isDir(filepath.Join(dir, "tasks")) || isDir(filepath.Join(dir, ".git")) {
+			return Open(filepath.Join(dir, "tasks"))
 		}
 
 		parent := filepath.Dir(dir)
 		if parent == dir {
-			return nil, fmt.Errorf("no tickets/ or .git directory found from %s", startDir)
+			return nil, fmt.Errorf("no tasks/ or .git directory found from %s", startDir)
 		}
 
 		dir = parent

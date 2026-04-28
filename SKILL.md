@@ -1,21 +1,21 @@
 ---
 name: tickets
-description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about tickets, ticket dependencies, , creating a branch from a ticket, or initializing the `tickets/` layout in a new repo.
+description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tasks/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about tickets, ticket dependencies, , creating a branch from a ticket, or initializing the `tasks/` layout in a new repo.
 ---
 
 # tickets
 
-`tickets` is a git-backed ticketing CLI. Tickets are plain Markdown files with YAML frontmatter living under `tickets/<status>/<slug>/DESCRIPTION.md`. Lifecycle moves use `git mv` to preserve history, so always prefer the CLI over editing or moving files by hand.
+`tickets` is a git-backed ticketing CLI. Tickets are plain Markdown files with YAML frontmatter living under `tasks/<status>/<slug>/DESCRIPTION.md`. Lifecycle moves use `git mv` to preserve history, so always prefer the CLI over editing or moving files by hand.
 
 ## When this skill applies
 
-Trigger on requests that mention tickets, issues-in-repo, the `tickets/` directory, or any of the verbs: open / create / file / list / show / search / start / finish / close / archive / move / validate / depend on. If the repo has no `tickets/` directory yet, the user likely wants `tickets init` first.
+Trigger on requests that mention tickets, issues-in-repo, the `tasks/` directory, or any of the verbs: open / create / file / list / show / search / start / finish / close / archive / move / validate / depend on. If the repo has no `tasks/` directory yet, the user likely wants `tickets init` first.
 
 ## Core rules (do not skip)
 
 1. **Always go through the CLI for lifecycle changes.** Use `tickets start|done|archive|move` — never `mv` files yourself, never edit the `status:` frontmatter field directly. The CLI runs `git mv` and keeps history attached.
 2. **Slugs are kebab-case** and act as the ticket's identity. Generate them from the title: lowercase, ASCII, words joined by `-`. Example: `"Add rate limiting to the API"` → `add-rate-limiting-to-the-api`.
-3. **Run from inside the repo.** The CLI auto-discovers the `tickets/` root from CWD; pass `--root <path>` only if running from outside.
+3. **Run from inside the repo.** The CLI auto-discovers the `tasks/` root from CWD; pass `--root <path>` only if running from outside.
 4. **One concern per ticket.** If a request bundles multiple independent pieces of work, file them as separate tickets and link them via `Dependencies`.
 5. **After any create/move, run `tickets validate`** to catch frontmatter or dependency-graph errors before handing back to the user.
 
@@ -108,7 +108,7 @@ Do not invent extra frontmatter fields — `tickets validate` will reject them. 
 
 ## Initialising a new repo
 
-If `tickets/` does not exist, run `tickets init` first — it scaffolds `tickets/{to-do,in-progress,done,archived}/`. Don't create those directories by hand.
+If `tasks/` does not exist, run `tickets init` first — it scaffolds `tasks/{to-do,in-progress,done,archived}/`. Don't create those directories by hand.
 
 ## Reporting back to the user
 

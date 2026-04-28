@@ -13,7 +13,7 @@ Requires Go 1.21+.
 ## Quickstart
 
 ```sh
-# 1. Initialise the tickets/ directory in your repo
+# 1. Initialise the tasks/ directory in your repo
 tickets init
 
 # 2. Create a new ticket
@@ -35,7 +35,7 @@ tickets validate
 ## Directory layout
 
 ```
-tickets/
+tasks/
   to-do/          # open tickets waiting to be worked on
   in-progress/    # tickets actively being worked on
   done/           # completed tickets, kept for history
@@ -45,7 +45,7 @@ tickets/
 Each ticket is a directory named after its slug, containing a single `DESCRIPTION.md`:
 
 ```
-tickets/to-do/add-rate-limiting-to-the-api/
+tasks/to-do/add-rate-limiting-to-the-api/
   DESCRIPTION.md
 ```
 
@@ -95,7 +95,7 @@ Consider using a token-bucket algorithm. Redis not available — use in-process 
 ## All commands
 
 ```
-tickets init        Initialise the tickets/ directory
+tickets init        Initialise the tasks/ directory
 tickets new         Create a new ticket
 tickets list        List tickets (default: to-do + in-progress)
 tickets show        Print a ticket's full content

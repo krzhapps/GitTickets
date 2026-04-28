@@ -39,8 +39,8 @@ func storeFromGlobals(g *Globals) (*store.Store, error) {
 	return s, nil
 }
 
-// repoRoot returns the assumed git repository root from a tickets/ root
-// path: tickets/ is conventionally <repo>/tickets, so repo root is its
+// repoRoot returns the assumed git repository root from a tasks/ root
+// path: tasks/ is conventionally <repo>/tasks, so repo root is its
 // parent.
 func repoRoot(ticketsRoot string) string {
 	return filepath.Dir(ticketsRoot)
