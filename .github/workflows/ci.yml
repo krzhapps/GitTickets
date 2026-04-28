@@ -29,5 +29,5 @@ jobs:
 
       - name: validate tickets
         run: |
-          go build -o tickets ./cmd/tickets
-          ./tickets validate
+          go build -o tick ./cmd/tickets
+          ./tick validate
