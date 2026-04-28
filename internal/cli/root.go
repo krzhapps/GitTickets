@@ -51,7 +51,6 @@ func NewRootCmd() *cobra.Command {
 		newValidateCmd(g),
 		newSearchCmd(g),
 		newDepsCmd(g),
-		newBranchCmd(g),
 	)
 
 	return cmd
@@ -61,5 +60,5 @@ const rootLongHelp = `tickets manages a directory of Markdown tickets tracked in
 
 Tickets live under tasks/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md
 with YAML frontmatter. The CLI handles creation, listing, lifecycle moves
-(preserving history via 'git mv'), validation, search, dependency graphs,
-and per-ticket branches.`
+(preserving history via 'git mv'), validation, search, and dependency graphs.
+'tickets start' also creates and checks out a per-ticket git branch.`

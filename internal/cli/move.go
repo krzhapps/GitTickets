@@ -5,8 +5,12 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/krzhapps/GitTickets/internal/git"
 	"github.com/krzhapps/GitTickets/internal/ticket"
 )
+
+// branchPrefix is prepended to a ticket slug to form its git branch name.
+const branchPrefix = "ticket/"
 
 // runMove is the shared implementation behind `move`, `start`, `done`,
 // `archive`. Prints the resulting bucket path on success.
@@ -44,10 +48,36 @@ func newMoveCmd(g *Globals) *cobra.Command {
 func newStartCmd(g *Globals) *cobra.Command {
 	return &cobra.Command{
 		Use:   "start <slug>",
-		Short: "Move a ticket to in-progress",
+		Short: "Move a ticket to in-progress and check out a ticket/<slug> branch",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return runMove(cmd, g, args[0], ticket.StatusInProgress)
+			slug := args[0]
+			if err := runMove(cmd, g, slug, ticket.StatusInProgress); err != nil {
+				return err
+			}
+
+			s, err := storeFromGlobals(g)
+			if err != nil {
+				return err
+			}
+
+			gw := git.New(repoRoot(s.Root))
+			if !gw.IsRepo() {
+				return nil
+			}
+
+			branch := branchPrefix + slug
+			created, err := gw.EnsureBranch(branch)
+			if err != nil {
+				return err
+			}
+
+			verb := "switched to existing branch"
+			if created {
+				verb = "created and switched to branch"
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "%s %s\n", verb, branch)
+			return nil
 		},
 	}
 }
