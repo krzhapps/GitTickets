@@ -1,6 +1,6 @@
 ---
 name: tickets
-description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tasks/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about tickets, ticket dependencies, , creating a branch from a ticket, or initializing the `tasks/` layout in a new repo.
+description: Use when the user wants to create, list, search, edit, validate, or change the lifecycle (start/done/archive/move) of tickets in a repo that uses the `tickets` CLI — a git-backed ticketing system where each ticket is a Markdown file with YAML frontmatter under `tasks/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md`. Also use when the user asks about tickets, ticket dependencies, creating a branch from a ticket, or initializing the `tasks/` layout in a new repo.
 ---
 
 # tickets
@@ -58,7 +58,7 @@ Pass `--no-edit` when scripting; omit it if the user wants to drop straight into
 Valid statuses for `move`: `pending`, `in-progress`, `blocked`, `done`, `archived`.
 
 ### Branch off a ticket
-`tickets branch <slug> --checkout` — creates and switches to a git branch named after the slug. Use this when the user says "let's start working on X" and they want a branch in one shot (combine with `tickets start <slug>`).
+`tickets start <slug>` automatically creates and checks out a `ticket/<slug>` git branch as part of moving the ticket to in-progress. If the branch already exists, it is checked out without error. There is no separate `branch` command.
 
 ### Dependencies
 - Tree for one ticket: `tickets deps <slug>`

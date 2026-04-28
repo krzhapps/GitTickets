@@ -100,14 +100,13 @@ tickets new         Create a new ticket
 tickets list        List tickets (default: to-do + in-progress)
 tickets show        Print a ticket's full content
 tickets edit        Open a ticket in $EDITOR
-tickets start       Move a ticket to in-progress
+tickets start       Move a ticket to in-progress and check out a ticket/<slug> branch
 tickets done        Move a ticket to done
 tickets archive     Move a ticket to archived
 tickets move        Move a ticket to an arbitrary status
 tickets search      Full-text search across all tickets
 tickets validate    Check all tickets for schema errors
 tickets deps        Show the dependency graph
-tickets branch      Create a git branch named after a ticket
 ```
 
 ## Conventions
