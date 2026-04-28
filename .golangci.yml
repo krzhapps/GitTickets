@@ -12,7 +12,3 @@ linters:
     - misspell
     - unused
 
-  settings:
-    goimports:
-      local-prefixes:
-        - github.com/krzhapps/GitTickets
