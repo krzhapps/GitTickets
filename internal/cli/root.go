@@ -34,7 +34,7 @@ func NewRootCmd() *cobra.Command {
 		SilenceErrors: true, // main.go prints the error itself
 	}
 
-	cmd.PersistentFlags().StringVar(&g.Root, "root", "", "tickets directory (default: discovered from CWD)")
+	cmd.PersistentFlags().StringVar(&g.Root, "root", "", "tasks directory (default: discovered from CWD)")
 	cmd.PersistentFlags().BoolVarP(&g.Verbose, "verbose", "v", false, "verbose output")
 	cmd.PersistentFlags().BoolVar(&g.NoColor, "no-color", false, "disable color output")
 
@@ -59,7 +59,7 @@ func NewRootCmd() *cobra.Command {
 
 const rootLongHelp = `tickets manages a directory of Markdown tickets tracked in git.
 
-Tickets live under tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md
+Tickets live under tasks/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md
 with YAML frontmatter. The CLI handles creation, listing, lifecycle moves
 (preserving history via 'git mv'), validation, search, dependency graphs,
 and per-ticket branches.`

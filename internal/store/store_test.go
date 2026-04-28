@@ -183,10 +183,10 @@ func TestMove_PropagatesRenameError(t *testing.T) {
 	}
 }
 
-func TestDiscover_FindsTicketsDir(t *testing.T) {
+func TestDiscover_FindsTasksDir(t *testing.T) {
 	t.Parallel()
 	tmp := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(tmp, "tickets"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(tmp, "tasks"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	nested := filepath.Join(tmp, "src", "deep")
@@ -198,7 +198,7 @@ func TestDiscover_FindsTicketsDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, _ := filepath.Abs(filepath.Join(tmp, "tickets"))
+	want, _ := filepath.Abs(filepath.Join(tmp, "tasks"))
 	if s.Root != want {
 		t.Errorf("Root = %s, want %s", s.Root, want)
 	}
@@ -218,7 +218,7 @@ func TestDiscover_FindsViaGitDir(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	want, _ := filepath.Abs(filepath.Join(tmp, "tickets"))
+	want, _ := filepath.Abs(filepath.Join(tmp, "tasks"))
 	if s.Root != want {
 		t.Errorf("Root = %s, want %s", s.Root, want)
 	}
