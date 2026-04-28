@@ -11,74 +11,13 @@ linters:
     - ineffassign
     - staticcheck
     - misspell
-    - unused 
-  #   - asasalint
-  #   - asciicheck
-  #   - bodyclose
-  #   - contextcheck
-  #   - durationcheck
-  #   - err113
-  #   - errname
-  #   - errorlint
-  #   - exhaustive
-  #   - forcetypeassert
-  #   - goconst
-  #   - gocritic
-  #   - godot
-  #   - gomoddirectives
-  #   - gosec
-  #   - importas
-  #   - makezero
-  #   - misspell
-  #   - mnd
-  #   - nakedret
-  #   - nestif
-  #   - nilerr
-  #   - nilnil
-  #   - noctx
-  #   - nolintlint
-  #   - prealloc
-  #   - predeclared
-  #   - promlinter
-  #   - reassign
-  #   - revive
-  #   - staticcheck
-  #   - testableexamples
-  #   - thelper
-  #   - tparallel
-  #   - unconvert
-  #   - unparam
-  #   - usestdlibvars
-  #   - usetesting
-  #   - wastedassign
-  # disable:
-  #   - cyclop
-  #   - decorder
-  #   - depguard
-  #   - dogsled
-  #   - dupl
-  #   - forbidigo
-  #   - funlen
-  #   - gochecknoglobals
-  #   - gochecknoinits
-  #   - gocognit
-  #   - gocyclo
-  #   - godox
-  #   - goheader
-  #   - gomodguard
-  #   - goprintffuncname
-  #   - lll
-  #   - nlreturn
-  #   - paralleltest
-  #   - rowserrcheck
-  #   - sqlclosecheck
-  #   - tagliatelle
-  #   - testpackage
-  #   - varnamelen
-  #   - whitespace
-  #   - wrapcheck
-  #   - wsl
+    - unused
   settings:
+    errcheck:
+      exclude-functions:
+        - fmt.Fprintf
+        - fmt.Fprintln
+        - fmt.Fprint
     gocritic:
       enabled-tags:
         - diagnostic
