@@ -29,3 +29,6 @@ go.work.sum
 
 # project specific
 .claude
+
+# compiled CLI binary (built via `make build`)
+/tickets
