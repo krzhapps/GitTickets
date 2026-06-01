@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-go install github.com/krzhapps/GithubTickets/cmd/tickets@latest
+go install github.com/krzhapps/GitTickets/cmd/tickets@latest
 ```
 
 Requires Go 1.21+.
