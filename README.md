@@ -8,7 +8,13 @@
 go install github.com/krzhapps/GitTickets/cmd/tickets@latest
 ```
 
-Requires Go 1.21+.
+Requires Go 1.21+. Make sure Go's bin directory is on your `PATH` so the `tickets` command is found:
+
+```sh
+export PATH="$PATH:$(go env GOPATH)/bin"
+```
+
+Add that line to your shell profile (e.g. `~/.bashrc` or `~/.zshrc`) to make it permanent.
 
 ## Quickstart
 
