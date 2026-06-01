@@ -78,6 +78,39 @@ func TestCreate_InvalidSlug(t *testing.T) {
 	}
 }
 
+func TestCreate_InvokesTrackOnDescription(t *testing.T) {
+	t.Parallel()
+	s := newStore(t)
+
+	var tracked string
+	s.Track = func(path string) error {
+		tracked = path
+		return nil
+	}
+
+	tk := newTicket("trackme", "Track Me", ticket.StatusPending)
+	if err := s.Create(tk); err != nil {
+		t.Fatal(err)
+	}
+
+	want := filepath.Join(tk.Dir, "DESCRIPTION.md")
+	if tracked != want {
+		t.Errorf("tracked = %q, want %q", tracked, want)
+	}
+}
+
+func TestCreate_PropagatesTrackError(t *testing.T) {
+	t.Parallel()
+	s := newStore(t)
+	wantErr := errors.New("add refused")
+	s.Track = func(string) error { return wantErr }
+
+	err := s.Create(newTicket("boom", "B", ticket.StatusPending))
+	if !errors.Is(err, wantErr) {
+		t.Errorf("got %v, want wrapped %v", err, wantErr)
+	}
+}
+
 func TestFind_NotExistIsWrapped(t *testing.T) {
 	t.Parallel()
 	s := newStore(t)
