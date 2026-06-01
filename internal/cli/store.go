@@ -8,14 +8,14 @@ import (
 	"github.com/krzhapps/GitTickets/internal/store"
 )
 
-// storeFromGlobals resolves a *store.Store from --root, then $TASKS_ROOT,
+// storeFromGlobals resolves a *store.Store from --root, then $TICKETS_ROOT,
 // then by walking up from CWD. The Store is wired with git.Mv so directory
 // moves preserve rename history when the tree is inside a git repo (Mv
 // itself falls back to os.Rename outside one).
 func storeFromGlobals(g *Globals) (*store.Store, error) {
 	root := g.Root
 	if root == "" {
-		root = os.Getenv("TASKS_ROOT")
+		root = os.Getenv("TICKETS_ROOT")
 	}
 
 	var s *store.Store
@@ -39,8 +39,8 @@ func storeFromGlobals(g *Globals) (*store.Store, error) {
 	return s, nil
 }
 
-// repoRoot returns the assumed git repository root from a tasks/ root
-// path: tasks/ is conventionally <repo>/tasks, so repo root is its
+// repoRoot returns the assumed git repository root from a .tickets/ root
+// path: .tickets/ is conventionally <repo>/.tickets, so repo root is its
 // parent.
 func repoRoot(ticketsRoot string) string {
 	return filepath.Dir(ticketsRoot)
