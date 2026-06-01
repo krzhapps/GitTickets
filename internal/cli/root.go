@@ -29,7 +29,7 @@ func NewRootCmd() *cobra.Command {
 		Use:           "tickets",
 		Short:         "A git-backed, file-based ticketing system",
 		Long:          rootLongHelp,
-		Version:       version,
+		Version:       versionString(),
 		SilenceUsage:  true, // don't dump usage on runtime errors
 		SilenceErrors: true, // main.go prints the error itself
 	}
@@ -51,6 +51,7 @@ func NewRootCmd() *cobra.Command {
 		newValidateCmd(g),
 		newSearchCmd(g),
 		newDepsCmd(g),
+		newVersionCmd(g),
 	)
 
 	return cmd
