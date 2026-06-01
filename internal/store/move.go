@@ -35,7 +35,17 @@ func (s *Store) Create(t *ticket.Ticket) error {
 	}
 
 	t.Dir = dir
-	return s.Save(t)
+	if err := s.Save(t); err != nil {
+		return err
+	}
+
+	if s.Track != nil {
+		if err := s.Track(filepath.Join(dir, "DESCRIPTION.md")); err != nil {
+			return fmt.Errorf("track %s: %w", t.Slug, err)
+		}
+	}
+
+	return nil
 }
 
 // Save writes the ticket back to disk at its current Dir. Re-renders

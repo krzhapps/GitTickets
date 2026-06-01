@@ -21,6 +21,10 @@ import (
 // nil value can default to it transparently.
 type RenameFunc func(oldPath, newPath string) error
 
+// TrackFunc stages a freshly written path so it's tracked by version
+// control. A nil value is treated as a no-op (filesystem-only use).
+type TrackFunc func(path string) error
+
 // Store wraps a tickets/ root directory.
 type Store struct {
 	// Root is the absolute path to the tickets/ directory.
@@ -30,6 +34,12 @@ type Store struct {
 	// package wires in a `git mv`-backed implementation; tests and
 	// non-git use cases leave this nil and get os.Rename.
 	Rename RenameFunc
+
+	// Track, if non-nil, stages newly created ticket files so a
+	// subsequent `git mv` (from Move) doesn't fail on an untracked file.
+	// The git package wires in a `git add`-backed implementation; tests
+	// and non-git use cases leave this nil and get a no-op.
+	Track TrackFunc
 }
 
 // Bucket directory names — the on-disk grouping. Kept package-private:

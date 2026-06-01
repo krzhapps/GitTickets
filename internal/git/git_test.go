@@ -110,6 +110,43 @@ func TestMv_UsesGitMvInsideRepo(t *testing.T) {
 	}
 }
 
+func TestAdd_NoOpsOutsideRepo(t *testing.T) {
+	t.Parallel()
+	fr := &fakeRunner{responses: map[string]fakeResp{
+		"rev-parse": {out: []byte("false\n")}, // not a repo
+	}}
+	g := &Git{Runner: fr}
+
+	if err := g.Add("foo/DESCRIPTION.md"); err != nil {
+		t.Fatal(err)
+	}
+	for _, c := range fr.calls {
+		if c[0] == "add" {
+			t.Errorf("git add was called when outside a repo: %v", c)
+		}
+	}
+}
+
+func TestAdd_UsesGitAddInsideRepo(t *testing.T) {
+	t.Parallel()
+	fr := &fakeRunner{responses: map[string]fakeResp{
+		"rev-parse": {out: []byte("true\n")},
+		"add":       {out: nil},
+	}}
+	g := &Git{Runner: fr}
+
+	if err := g.Add("foo/DESCRIPTION.md"); err != nil {
+		t.Fatal(err)
+	}
+	want := [][]string{
+		{"rev-parse", "--is-inside-work-tree"},
+		{"add", "foo/DESCRIPTION.md"},
+	}
+	if !reflect.DeepEqual(fr.calls, want) {
+		t.Errorf("calls = %v, want %v", fr.calls, want)
+	}
+}
+
 func TestBranch(t *testing.T) {
 	t.Parallel()
 	cases := []struct {

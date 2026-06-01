@@ -35,7 +35,9 @@ func storeFromGlobals(g *Globals) (*store.Store, error) {
 		return nil, err
 	}
 
-	s.Rename = git.New(repoRoot(s.Root)).Mv
+	gw := git.New(repoRoot(s.Root))
+	s.Rename = gw.Mv
+	s.Track = gw.Add
 	return s, nil
 }
 
