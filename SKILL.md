@@ -50,7 +50,7 @@ Pass `--no-edit` when scripting; omit it if the user wants to drop straight into
 ### Lifecycle moves
 | Verb the user uses                      | Command                            |
 |-----------------------------------------|------------------------------------|
-| "start working on", "pick up", "begin"  | `tickets start <slug>`             |
+| "start working on", "pick up", "begin"  | `tickets start <slug> --worktree`  |
 | "done", "finished", "ship", "close"     | `tickets done <slug>`              |
 | "won't fix", "duplicate", "supersede"   | `tickets archive <slug>`           |
 | arbitrary (e.g. set `blocked`)          | `tickets move <slug> blocked`      |
@@ -59,6 +59,8 @@ Valid statuses for `move`: `pending`, `in-progress`, `blocked`, `done`, `archive
 
 ### Branch off a ticket
 `tickets start <slug>` automatically creates and checks out a `ticket/<slug>` git branch as part of moving the ticket to in-progress. If the branch already exists, it is checked out without error. There is no separate `branch` command.
+
+**Prefer `--worktree` when you are an agent.** `tickets start <slug> --worktree` checks the `ticket/<slug>` branch out in a dedicated sibling working directory (`<repo>-worktrees/<slug>`) instead of switching the main tree in place. This is the recommended default for agents: it lets several agents work on separate tickets concurrently without fighting over the checked-out branch, and keeps the user's main working tree untouched. After starting, `cd` into the printed worktree path to do the work. The worktree is removed automatically on `tickets done`/`archive` (skipped with a warning if it has uncommitted changes).
 
 ### Dependencies
 - Tree for one ticket: `tickets deps <slug>`
