@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -114,6 +115,85 @@ func TestLifecycle_HappyPath(t *testing.T) {
 	}
 	if !strings.Contains(stdout, "auth-google-oauth-errors") {
 		t.Errorf("search missing hit: %q", stdout)
+	}
+}
+
+// setupGitTree creates a real git repo in a tempdir with an initialised
+// .tickets/ root, returning the repo root and the tickets root. Skips the
+// test if git isn't on PATH (CI sandboxes without git).
+func setupGitTree(t *testing.T) (repo, root string) {
+	t.Helper()
+	if _, err := exec.LookPath("git"); err != nil {
+		t.Skip("git binary not available")
+	}
+	repo = t.TempDir()
+
+	runGit := func(args ...string) {
+		t.Helper()
+		full := append([]string{
+			"-c", "user.email=t@example.com",
+			"-c", "user.name=Test",
+			"-c", "init.defaultBranch=main",
+			"-c", "commit.gpgsign=false",
+		}, args...)
+		cmd := exec.Command("git", full...)
+		cmd.Dir = repo
+		cmd.Env = append(os.Environ(),
+			"HOME="+repo,
+			"GIT_CONFIG_GLOBAL=/dev/null",
+			"GIT_CONFIG_SYSTEM=/dev/null",
+		)
+		if out, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v\n%s", args, err, out)
+		}
+	}
+
+	runGit("init")
+	if err := os.WriteFile(filepath.Join(repo, "README.md"), []byte("# repo\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	runGit("add", "README.md")
+	runGit("commit", "-m", "init")
+
+	root = filepath.Join(repo, ".tickets")
+	if _, _, err := runCLI(t, withRoot(root, "init")...); err != nil {
+		t.Fatalf("tickets init: %v", err)
+	}
+	return repo, root
+}
+
+// TestStartWorktree_CreatesAndCleansUp covers the full worktree lifecycle:
+// `start --worktree` creates a sibling worktree, and `done` removes it.
+func TestStartWorktree_CreatesAndCleansUp(t *testing.T) {
+	repo, root := setupGitTree(t)
+
+	if _, _, err := runCLI(t, withRoot(root, "new", "wt-feature", "--no-edit")...); err != nil {
+		t.Fatalf("new: %v", err)
+	}
+
+	stdout, _, err := runCLI(t, withRoot(root, "start", "wt-feature", "--worktree")...)
+	if err != nil {
+		t.Fatalf("start --worktree: %v", err)
+	}
+
+	wt := filepath.Join(filepath.Dir(repo), filepath.Base(repo)+"-worktrees", "wt-feature")
+	if !strings.Contains(stdout, wt) {
+		t.Errorf("start stdout = %q, want it to mention %q", stdout, wt)
+	}
+	if _, err := os.Stat(wt); err != nil {
+		t.Fatalf("worktree dir not created: %v", err)
+	}
+
+	// `done` should remove the (clean) worktree.
+	stdout, _, err = runCLI(t, withRoot(root, "done", "wt-feature")...)
+	if err != nil {
+		t.Fatalf("done: %v", err)
+	}
+	if !strings.Contains(stdout, "removed worktree") {
+		t.Errorf("done stdout = %q, want it to report worktree removal", stdout)
+	}
+	if _, err := os.Stat(wt); !os.IsNotExist(err) {
+		t.Errorf("worktree dir still present after done: %v", err)
 	}
 }
 

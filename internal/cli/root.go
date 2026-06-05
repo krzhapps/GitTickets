@@ -62,4 +62,5 @@ const rootLongHelp = `tickets manages a directory of Markdown tickets tracked in
 Tickets live under .tickets/{to-do,in-progress,done,archived}/<slug>/DESCRIPTION.md
 with YAML frontmatter. The CLI handles creation, listing, lifecycle moves
 (preserving history via 'git mv'), validation, search, and dependency graphs.
-'tickets start' also creates and checks out a per-ticket git branch.`
+'tickets start' also creates and checks out a per-ticket git branch, or with
+--worktree a dedicated sibling working directory for parallel development.`

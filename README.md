@@ -107,6 +107,7 @@ tickets list        List tickets (default: to-do + in-progress)
 tickets show        Print a ticket's full content
 tickets edit        Open a ticket in $EDITOR
 tickets start       Move a ticket to in-progress and check out a ticket/<slug> branch
+                    (use --worktree for a dedicated sibling working directory)
 tickets done        Move a ticket to done
 tickets archive     Move a ticket to archived
 tickets move        Move a ticket to an arbitrary status
@@ -114,6 +115,32 @@ tickets search      Full-text search across all tickets
 tickets validate    Check all tickets for schema errors
 tickets deps        Show the dependency graph
 ```
+
+## Parallel work with worktrees
+
+To work on several tickets at once without switching branches in place, start a
+ticket with `--worktree`:
+
+```sh
+tickets start add-rate-limiting-to-the-api --worktree
+```
+
+This checks the `ticket/<slug>` branch out in its own [git worktree](https://git-scm.com/docs/git-worktree),
+a sibling directory next to the repo:
+
+```
+<repo>/
+<repo>-worktrees/
+  add-rate-limiting-to-the-api/   # full working tree on branch ticket/add-rate-limiting-to-the-api
+```
+
+Each worktree is an independent working directory sharing the same git history,
+so multiple agents or developers can work on different tickets concurrently
+without stepping on each other. `cd` into the printed path to begin.
+
+When you `tickets done` or `tickets archive` the ticket, its worktree is removed
+automatically. If the worktree has uncommitted changes, removal is skipped with
+a warning so nothing is lost — clean it up by hand with `git worktree remove`.
 
 ## Conventions
 
